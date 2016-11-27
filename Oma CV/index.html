@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+
+    <title>Ansioluettelo</title>
+
+    <!-- liitä linkit bootrapin css-määritykseen sekä css-kansion tyyleihin tänne -->
+	<link href="tyylit/tyyli.css" rel="stylesheet" type="text/css">  
+	<link href="kuvat/favicon.ico" rel="icon" type="image/x-icon">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet"  href="http://code.jquery.com/mobile/git/jquery.mobile-git.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<link href="tyylit/navbar-fixed-top.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css">
+	
+    <!-- liitä linkit jqueryn kirjastoon ja bootstrapin js-kirjastoon tänne-->
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+   
+   
+  </head>
+  
+
+  <body>
+     <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" style="">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#tiedot">Ansioluettelo - Jenni Wesslin</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#tiedot">Tietoja minusta</a></li>
+            <li><a href="#koulutus">Koulutus</a></li>
+            <li><a href="#Tyokokemus">Työkokemus</a></li>
+            <li><a href="#taidot">Taidot</a></li>
+			<li><a href="#kurssit">Kurssit</a></li>
+			<li><a href="#kielitaito">Kielitaito</a></li>
+          </ul>
+           
+         <ul class="nav navbar-nav navbar-right">
+           <li><a href="http://www.linkedin.com/in/Jenni-Wesslin"><span class="glyphicon glyphicon-info-sign"></span> LinkedIn</a></li>
+         </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+   
+    <div class="container marketing">
+	
+<hr id="tiedot" class="featurette-divider">
+		<br>
+		<br>
+		<div  class="row featurette">
+		<center><img src="kuvat/cv_kuva.jpg" id="omakuva"/></center>
+	  
+          <h2 class="featurette-heading">Tervehdys!</h2>
+			<div id="teksti">Hei! Olen Jenni Wesslin, toisen vuoden Tietojenkäsittelyn opiskelija
+			Haaga-Helia Ammattikorkeakoulusta.<br>
+			Kiinnostuksen kohteisiini kuuluvat Java-koodauksen lisäksi verkkosivujen ja graafisten käyttöliittymien rakentelu ja suunnittelu, sekä 3D-mallinnus Blenderillä.<br><br>
+			Vahvuuteni ovat Front-end- koodauksessa, mutta haluan oppia ja osata mahdollisimman paljon myös Back-end- puolesta, sillä Full-stack- osaaminen on se mihin pyrin.<br>
+			Minulle ovat tuttuja Java, SQL, JavaScript, HTML, CSS, jQuery, AngularJS ja Bootstrap.<br><br>
+			Olen kiinnostunut oppimaan uutta ja pidän haasteista. Olen huumorintajuinen, vastuuntuntoinen, reipas työntekijä joka haluaa kehittyä ja osaa työskennellä niin yksin kuin ryhmässäkin.
+			</div>
+	   </div>
+         
+<hr id="koulutus" class="featurette-divider">
+		<br>
+		<br>
+		<div class="row featurette">
+        
+        <div class="col-md-12">
+          <h2 class="featurette-heading">Koulutus</h2>
+		  	<table data-role="table" class="ui-responsive ui-shadow" id="tutkinnot" style="box-shadow:3px 3px 30px;" align="center">
+				<thead>
+						<tr>
+							<th style="padding:10px;">Tutkinto</th>
+							<th>Oppilaitos</th>
+							<th>Aikaväli</th>
+						</tr>
+				</thead>
+				<tbody>
+						<tr>
+							<td style="padding:10px;">Tietojenkäsittelyn koulutusohjelma</td>
+							<td style="padding:10px;">Haaga-Helia Ammattikorkeakoulu</td>
+							<td style="padding:10px;">21.01.2015 - jatkuu</td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Pintakäsittelyalan perustutkinto</td>
+							<td style="padding:10px;">Helsingin Maalariammattikoulu</td>
+							<td style="padding:10px;">06.08.2007 - 27.11.2009</td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Ylioppilastutkinto</td>
+							<td style="padding:10px;">Kontiolahden lukio</td>
+							<td style="padding:10px;">16.08.2004 - 02.06.2007</td>
+						</tr>
+				</tbody>
+			</table>
+        </div>
+		</div>
+		
+<hr id="Tyokokemus" class="featurette-divider"> 
+		<br>
+		<br>
+        <div  class="row featurette">
+		<div class="col-md-12">
+		  <h2 class="featurette-heading">Työkokemus</h2>
+		  <h3></h3>
+			<table data-role="table" data-mode="columntoggle" data-column-btn-text="Valitse näytettävät tiedot" class="ui-responsive ui-shadow" id="tyokokemus" style="box-shadow:3px 3px 30px;" align="center">
+				<thead>
+						<tr>
+							<th style="padding:10px;">Tehtävänimike</th>
+							<th style="padding:10px;"data-priority="1">Työnantaja</th>
+							<th style="padding:10px;"data-priority="2">Yritys</th>
+							<th style="padding:10px;"data-priority="3">Aikaväli</th>
+							<th style="padding:10px;"data-priority="4">Lisätiedot</th>
+						</tr>
+				</thead>
+				<tbody>
+						<tr>
+							<td style="padding:10px;">Apulaismyymälä-päällikkö</td>
+							<td style="padding:10px;">Kari Kyrömäki</td>
+							<td style="padding:10px;">Suomen Lähikauppa Oy</td>
+							<td style="padding:10px;">1.9.2007 - 6.3.2016</td>
+							<td style="padding:10px;">Työtehtäviini kuului kassatyön ja hyllyttämisen lisäksi tilausten hoito (tilausmäärien arviointi, tilaaminen ja vastaanotto), tilitykset sekä myymäläpäällikön työparina toimiminen</td>
+						</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+
+<hr id="taidot" class="featurette-divider">
+		<br>
+		<br>
+		<div  class="row featurette">
+         
+        <h2 class="featurette-heading">Taidot</h2>
+		<div class="col-md-7">
+			<table data-role="table" class="ui-responsive ui-shadow" id="" style="box-shadow:3px 3px 30px; margin-bottom:30px; width:50%" align="center">
+				<thead>
+					<tr>
+						<th style="padding:10px;">Taitotaso</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+						<tr>
+							<td style="padding:10px;">Alkeet</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Kohtalainen</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Hyvä</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Erinomainen</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		
+		<div class="col-md-5">
+		<div class="ui-responsive" id="Taitotaulu">
+		
+			<table data-role="table" class="ui-responsive ui-shadow" id="taidot" style="box-shadow:3px 3px 30px;" align="center">
+	
+				<thead>
+						<tr>
+							<th style="padding:10px;">Nimi</th>
+							<th style="padding:10px;">Taitotaso</th>
+						</tr>
+				</thead>
+				<tbody>
+						<tr>
+							<td style="padding:10px;">Java</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Android-ohjelmointi</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">JavaScript</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">HTML</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">jQuery</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Bootstrap</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">AngularJS</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">CSS</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">SQL</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Office365- ohjelmat</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Windows (7, 8, 10)</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Linux</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">3D-mallinnus (Blender)</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						
+				</tbody>
+			</table>
+        </div>
+		</div>
+		</div>
+		
+<hr id="kurssit" class="featurette-divider">
+		<br>
+		<br>
+		<div class="row featurette">
+		
+		<div class="col-md-12">
+		   <h2 class="featurette-heading">Kurssit</h2>
+		<div class="ui-responsive" id="kurssitaulu">
+			<table data-role="table" class="ui-responsive ui-shadow" id="kurssit" style="box-shadow:3px 3px 30px;" align="center">
+				<thead>
+						<tr>
+							<th style="padding:10px;">Kurssin nimi</th>
+							<th style="padding:10px;">Oppilaitos</th>
+							<th style="padding:10px;">Lisätiedot</th>
+						</tr>
+				</thead>
+				<tbody>
+						<tr>
+							<td style="padding:10px;">Android- ohjelmointi</td>
+							<td style="padding:10px;">Haaga-Helia Ammattikorkeakoulu</td>
+							<td style="padding:10px;">Android- ohjelmoinnin alkeet. Ohjelmoin kurssilla yksinkertaisen Ostoslista- sovelluksen, jonka avulla pystyy kokoamaan ostoslistan ja lähettämään sen tekstiviestillä valitsemalleen henkilölle.</td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Hypermedia</td>
+							<td style="padding:10px;">Haaga-Helia Ammattikorkeakoulu</td>
+							<td style="padding:10px;">Verkkosivujen rakentaminen käyttäen apuna mm. bootstrapia, jQueryä, jQuerymobilea, AngularJS:sää apuna käyttäen.</td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Basic 3D-Design with Blender</td>
+							<td style="padding:10px;">Haaga-Helia Ammattikorkeakoulu</td>
+							<td style="padding:10px;">3D-mallinnuksen perusteet, yksinkertaisien objektien mallinnus.</td>
+						</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
+		</div>
+
+<hr id="kielitaito" class="featurette-divider">
+      
+		<div class="row featurette">
+  
+		<div class="col-md-12">
+		<h2 class="featurette-heading">Kielitaito</h2>
+		<div class="ui-responsive" id="kielitaulu">
+			<table data-role="table" id="kielitaito" style="box-shadow:3px 3px 30px;" align="center">
+				<thead>
+						<tr>
+							<th style="padding:10px;">Kieli</th>
+							<th style="padding:10px;">Taitotaso</th>
+						</tr>
+				</thead>
+				<tbody>
+						<tr>
+							<td style="padding:10px;">Suomi</td>
+							<td style="padding:10px;">Äidinkieli</td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Englanti</td>
+							<td style="padding:10px;">Erinomainen</td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">Ruotsi</td>
+							<td style="padding:10px;">Alkeet</td>
+						</tr>
+				</tbody>
+			</table>
+		</div>
+        </div>
+		</div>
+
+      
+      <hr class="featurette-divider">
+	  
+      <footer>
+        <p style="font-size:25px" class="pull-right"><a href="#tiedot">Takaisin alkuun</a></p>
+        <p style="font-size:25px; text-align:center;">Jenni Wesslin &middot; Email: lordimonster@netti.fi / jenni.wesslin@myy.haaga-helia.fi &middot; puh:+358 44 3339233</p>
+      </footer>
+
+    </div><!-- /.container -->
+
+  </body>
+</html>

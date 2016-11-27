@@ -1,0 +1,72 @@
+
+/*tyyli pienille näytöille*/
+@media (max-width: 769px) {
+	
+body {font-size:15px;}
+h2 {font-size:25px;}
+
+#teksti{text-align:center;
+		padding:10px;}
+}	 
+
+/*tyyli tableteille*/
+@media (min-width: 769px) {
+	
+
+h2 {font-family: 'carringtonregular';
+	font-size:45px;}
+	
+#teksti{font-family: 'folksregular';
+	text-align:center;
+		padding:10px;}
+   
+}
+ /*tyyli isoille näytöille*/
+@media (min-width: 1024px) {
+h2 {font-family: 'carringtonregular';
+	font-size:50px;}
+
+body {font-size:20px;}
+}
+
+body {min-height: 2000px;
+padding-top: 70px;}
+
+h1 {font-family: 'carringtonregular';}
+
+h2{font-family: 'gothic_ultra_otregular';
+	text-align:center;}
+
+p{font-family: 'gothic_ultra_otregular';
+  font-size: 20px;}
+
+.navbar {background-color:#eda757;
+font-family: 'gothic_ultra_otregular';}
+
+.navbar-toggle {background-color:white;}
+
+
+.navbar-header .navbar-brand {
+	font-family: 'carringtonregular';
+	font-size: 30px;
+	color:#330202;
+}
+
+.navbar-header .navbar-brand:hover{
+	color:white;
+	transition:0.5s;
+	text-shadow:2px 2px 5px black;
+}
+
+
+#navbar a{font-family: 'gothic_ultra_otregular';
+	font-size: 25px;
+	text-shadow:1px 1px;
+	color:black;
+}
+#navbar a:hover{
+	color:white;
+	transition:0.5s;
+	text-shadow:5px 5px 5px black;
+}
+
