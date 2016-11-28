@@ -1,5 +1,5 @@
 # CV
 Curriculum Vitae
 
-See how the page looks rendered: http://myy.haaga-helia.fi~a1500957.
+See what the page looks like, when rendered: http://myy.haaga-helia.fi~a1500957.
 
