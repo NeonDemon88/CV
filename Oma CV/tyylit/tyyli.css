@@ -1,7 +1,25 @@
 
-img, #omakuva {border-radius:50%;
-			  width:30%;}
+.omakuva {border-radius:50%;
+         display:block;
+         margin:0 auto;
+		 box-shadow:0 10px 20px 0 rgba(0,0,0,0.5),0 6px 20px 0 rgba(0,0,0,0.19);
+		 width:30%;}
+			  
+#language{border-radius:5%;
+		width:90%;
+		box-shadow:0 10px 20px 0 rgba(0,0,0,0.5),0 6px 20px 0 rgba(0,0,0,0.19);
+		display: block; 
+		margin:0 auto;}
 
+#koodi {display:block;
+         margin:0 auto;}
+
+}
+img a {display:block;
+       margin:0 auto;
+       margin-left: auto; 
+       margin-right:auto;}
+			  
 h1{font-family: 'carringtonregular';
 	text-align: center;
 	font-size:30px;}
@@ -9,24 +27,40 @@ h1{font-family: 'carringtonregular';
 h2 {font-family: 'gothic_ultra_otregular';
    font-size:40px;
    text-align: center;
-   text-shadow:1px 1px 1px;}
+   margin-bottom: 30px !important;}
 
 h3 {font-family: 'gothic_ultra_otregular';
    font-size:28px;
    color:gray;
-   text-align:center;
    text-shadow:1px 1px 1px;}
+   
+label {font-family: 'gothic_ultra_otregular';
+   font-size:28px;
+   text-shadow:1px 1px 1px;}
+
+#nappi {font-family: 'gothic_ultra_otregular';
+	    font-size:28px;
+		text-shadow:1px 1px 1px;
+		background-color: #ffc266;}
+
+#nappi:hover {box-shadow:0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+		     transition:0.5s;}
+
   
 
-#teksti {font-family: 'folksregular';
+#teksti, #teksti2, #teksti3 {font-family: 'folksregular';
 	    text-align:center;
 		padding:10px;}
+
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+  }
 
 td {font-family: 'folksregular';}		
 		
 th {font-family: 'gothic_ultra_otregular';
-   font-size: 25px;
-   text-shadow:1px 1px;
+   font-size: 30px;
    background-color:#ffc266;
    border-bottom: 1px solid #d6d6d6;
    background-color:#FCB773;}
@@ -44,7 +78,50 @@ tr:nth-child(even) {
 }
 
 
-footer{font-size:50px;}  
+footer{font-size:50px;} 
+
+@keyframes pulse_animation {
+	0% { transform: scale(1); }
+	30% { transform: scale(1); }
+	40% { transform: scale(1.08); }
+	50% { transform: scale(1); }
+	60% { transform: scale(1); }
+	70% { transform: scale(1.08); }
+	80% { transform: scale(1); }
+	100% { transform: scale(1); }
+}
+.pulse {
+	animation-name: pulse_animation;
+	animation-duration: 5000ms;
+	transform-origin:70% 70%;
+	animation-iteration-count: 5;
+	animation-timing-function: linear;
+}
+
+.sivut a img { 
+	width: 140px;
+	height:100px;
+	padding:5px; 
+	display:block;
+	vertical-align: middle;
+	margin-bottom:5px;
+	margin-left:auto;
+	margin-right:auto;
+	transition:width 1s, height 1s, box-shadow 1s;
+	
+}
+
+
+
+.sivut a img:hover { 
+	border-style:solid;
+	border-color:lightgray;
+	border-width:1px;
+	box-shadow: 5px 5px 7px 2px #888888;
+	width: 190px;
+    height: 140px;
+}
+
    
 @font-face {
     font-family: 'carringtonregular';
@@ -77,6 +154,8 @@ footer{font-size:50px;}
     font-style: normal;
 
 }
+
+
 
 
 

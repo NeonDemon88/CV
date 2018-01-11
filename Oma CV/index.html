@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fi">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,26 +10,197 @@
 
     <title>Ansioluettelo</title>
 
-    <!-- liitä linkit bootrapin css-määritykseen sekä css-kansion tyyleihin tänne -->
-	<link href="tyylit/tyyli.css" rel="stylesheet" type="text/css">  
-	<link href="kuvat/favicon.ico" rel="icon" type="image/x-icon">
+	<link href="tyylit/tyyli.css" rel="stylesheet" type="text/css">   
+	<link href="kuvat/icon.ico" rel="icon" type="image/x-icon">
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	<link rel="stylesheet"  href="http://code.jquery.com/mobile/git/jquery.mobile-git.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
 	<link href="tyylit/navbar-fixed-top.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css">
+	<link href="tyylit/lightbox.css" rel="stylesheet" type="text/css">
 	
-    <!-- liitä linkit jqueryn kirjastoon ja bootstrapin js-kirjastoon tänne-->
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+   <script src="js/lightbox.min.js"></script>
    
+   <script>
+   var aani = new Audio();
+   var aani2 = new Audio();
+    var aani3 = new Audio();
+   aani.src = "aanet/click.wav";
+   aani2.src = "aanet/rewind.wav";
+   aani3.src = "aanet/button.wav";
+   </script>
+   <script>
+	$(document).ready(function(){
+	
+	//määritellään canvas-alue
+	var canvas = $("#canvas")[0];
+	var konteksti = canvas.getContext("2d");
+	var leveys = $("#canvas").width();
+	var korkeus = $("#canvas").height();
+	var ruutu = 10; //määritellään madon (koostuu neliöistä) leveys pikseleissä
+	var nopeus = 400; //määritellään nopeus. Peliä voi vaikeuttaa pienentämällä lukua. 100=0,1s 
+	var ruoka;
+	var pisteet;
+	var matoTaulukko; //Luodaan mato taulukkoon
+	
+	function alku(){
+	suunta = "right"; // alun oletus suunta oikea
+	luoMato(); // tehdään mato funktiokutsulla
+	luoRuoka(); //lisätään ruokaruutu funktiokutsulla
+	pisteet = 0;//nollataan pistelaskuri
+	if(typeof peliLuuppi != "undefined") clearInterval(peliLuuppi);
+	peliLuuppi = setInterval(piirra, nopeus); // kutsutaan piirra-funktiota 0,1 s välein
+	}
+	
+	alku();
+	
+	function luoMato(){
+	var pituus = 5; //Madon pituus alussa ruutuina
+	matoTaulukko = []; //Alussa tyhjä taulukko
+	for(var i =pituus-1; i>=0; i--){
+	matoTaulukko.push({x: i, y:0}); //Tehdään vaakasuoraan 5-ruutua pitkä mato vasempaan yläkulmaan
+	}}
+	
+	function luoRuoka(){
+	ruoka = {
+	x: Math.round(Math.random()*(leveys-ruutu)/ruutu), 
+	y: Math.round(Math.random()*(korkeus-ruutu)/ruutu), 
+	};
+	}
+	
+	function piirra() {
+	konteksti.fillStyle = "white"; //Canvas eli pelialue: sisus valkoinen
+	konteksti.fillRect(0, 0, leveys, korkeus);
+	konteksti.strokeStyle = "black"; //Canvas eli pelialue: reunus mustalla
+	konteksti.strokeRect(0, 0, leveys, korkeus);
+	
+	//Liikutetaan matoa ottamalla pois takaa viimeinen palanen ja siirtämällä se eteen ensimmäiseksi
+	var xpaikka = matoTaulukko[0].x;
+	var ypaikka = matoTaulukko[0].y;
+	
+	//Tutkitaan ensimmäisen solun mukainen kulkusuunta ja liikutetaan matoa tämän suuntaan
+	if(suunta == "right") xpaikka++;
+	else if(suunta == "left") xpaikka--;
+	else if(suunta == "up") ypaikka--;
+	else if(suunta == "down") ypaikka++;
+	
+	//aloitetaan peli alusta jos osutaan reunaan tai matoon itseensä
+	if(xpaikka == -1 || xpaikka == leveys/ruutu || ypaikka == -1 || ypaikka == korkeus/ruutu || tarkistaOsuiko(xpaikka, ypaikka, matoTaulukko)){
+	hidastaMato();
+	alku();
+	return;
+	}
+	
+	// jos saadaan ruoka syödyksi eli tullaan ruokasoluun niin madon pittus kasvaa yhdellä
+	if(xpaikka == ruoka.x && ypaikka == ruoka.y){
+	var loppuosa = {x: xpaikka, y: ypaikka};
+	pisteet++;
+	luoRuoka(); //tehdään uusi ruoka
+	nopeutaMatoa(); //nostetaan vaikeustasoa nopeuttamalla matoa
+	
+	}
+	else{
+	var loppuosa = matoTaulukko.pop(); //otetaan loppuosa pois ja siiretään se eteen
+	loppuosa.x = xpaikka; loppuosa.y = ypaikka;
+	}
+	
+	matoTaulukko.unshift(loppuosa); //jos mato syö ruuan: sijoitetaan loppuosan takaisin ja madon pituus kasvaa
+
+	for(var i = 0; i < matoTaulukko.length; i++){
+	var matoRuutu = matoTaulukko[i];
+	maalaaMato(matoRuutu.x, matoRuutu.y);//väritetään mato
+	}
+
+	maalaaRuoka(ruoka.x, ruoka.y);//väritetään ruoka
+
+	//Päivitetään pisteet
+	var pisteetTeksti = "Pisteet: " + pisteet;
+	konteksti.fillStyle = "navy";
+	konteksti.fillText(pisteetTeksti, 5, korkeus-5);
+	
+	var nopeusTeksti = "Nopeus: " + nopeus;
+	konteksti.fillStyle = "navy";
+	konteksti.fillText(nopeusTeksti, 100, korkeus-5);
+	
+	}
+	
+	function nopeutaMatoa(){
+	
+	if (nopeus <= 400 && nopeus >= 300)
+	{
+		nopeus = nopeus - 30;
+		if(typeof peliLuuppi != "undefined") clearInterval(peliLuuppi);
+	peliLuuppi = setInterval(piirra, nopeus);
+	}
+	
+	if (nopeus < 300 && nopeus >= 200)
+	{
+		nopeus = nopeus - 20;
+		if(typeof peliLuuppi != "undefined") clearInterval(peliLuuppi);
+	peliLuuppi = setInterval(piirra, nopeus);
+	}
+	
+	if (nopeus < 200 && nopeus >= 100)
+	{
+		nopeus = nopeus - 10;
+		if(typeof peliLuuppi != "undefined") clearInterval(peliLuuppi);
+	peliLuuppi = setInterval(piirra, nopeus);
+	}
+	
+	if (nopeus < 100)
+	{
+		nopeus = nopeus - 2;
+		if(typeof peliLuuppi != "undefined") clearInterval(peliLuuppi);
+	peliLuuppi = setInterval(piirra, nopeus);
+	}
+	}
+	
+	function hidastaMato(){
+		nopeus = 400;
+		if(typeof peliLuuppi != "undefined") clearInterval(peliLuuppi);
+		peliLuuppi = setInterval(piirra, nopeus);
+	}	
+	
+	function maalaaMato(x, y) {
+	konteksti.fillStyle = "lime";
+	konteksti.fillRect(x*ruutu, y*ruutu, ruutu, ruutu);
+	konteksti.strokeStyle = "white";
+	konteksti.strokeRect(x*ruutu, y*ruutu, ruutu, ruutu);
+	}
+	
+	function maalaaRuoka(x, y) {
+	konteksti.fillStyle = "red";
+	konteksti.fillRect(x*ruutu, y*ruutu, ruutu, ruutu);
+	konteksti.strokeStyle = "white";
+	konteksti.strokeRect(x*ruutu, y*ruutu, ruutu, ruutu);
+	}
+	
+	function tarkistaOsuiko(x, y, taulukko){
+	for(var i = 0; i < taulukko.length; i++){
+	if(taulukko[i].x == x &&taulukko[i].y == y)
+	return true;}
+	return false;
+	}
+	
+	$(document).keydown(function(e){
+	var nappain = e.which;
+	if(nappain == "65" && suunta != "right") suunta = "left";
+	else if(nappain == "87" && suunta != "down") suunta = "up";
+	else if(nappain == "68" && suunta != "left") suunta = "right";
+	else if(nappain == "83" && suunta != "up") suunta = "down";
+	})
+	
+	});
+	</script>
    
   </head>
   
 
   <body>
      <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" style="">
@@ -38,39 +209,42 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#tiedot">Ansioluettelo - Jenni Wesslin</a>
+		
+          <a class="navbar-brand" href="#tiedot" onmousedown="aani.play()" >Ansioluettelo</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#tiedot">Tietoja minusta</a></li>
-            <li><a href="#koulutus">Koulutus</a></li>
-            <li><a href="#Tyokokemus">Työkokemus</a></li>
-            <li><a href="#taidot">Taidot</a></li>
-			<li><a href="#kurssit">Kurssit</a></li>
-			<li><a href="#kielitaito">Kielitaito</a></li>
+            <li><a href="#koulutus" onmousedown="aani.play()">Koulutus</a></li>
+            <li><a href="#Tyokokemus" onmousedown="aani.play()">Työkokemus</a></li>
+            <li><a href="#taidot" onmousedown="aani.play()">Taidot</a></li>
+			<li><a href="#galleria" onmousedown="aani.play()">Galleria</a></li>
+			<li><a href="#kurssit" onmousedown="aani.play()">Kurssit</a></li>
+			<li><a href="#kielitaito" onmousedown="aani.play()">Kielitaito</a></li>
           </ul>
            
          <ul class="nav navbar-nav navbar-right">
-           <li><a href="http://www.linkedin.com/in/Jenni-Wesslin"><span class="glyphicon glyphicon-info-sign"></span> LinkedIn</a></li>
+           <li><a href="http://www.linkedin.com/in/Jenni-Wesslin" onmousedown="aani.play()"><span class="glyphicon glyphicon-info-sign"></span> LinkedIn</a></li>
+		   <li><a href="https://github.com/NeonDemon88" onmousedown="aani.play()"><span class="glyphicon glyphicon-info-sign"></span> GitHub</a></li>
          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
    
     <div class="container marketing">
-	
-<hr id="tiedot" class="featurette-divider">
+		
+		<div id="tiedot" class="row featurette">
 		<br>
 		<br>
-		<div  class="row featurette">
-		<center><img src="kuvat/cv_kuva.jpg" id="omakuva"/></center>
-	  
+		<br>
+		<img class="omakuva pulse" alt="Profiilikuva" src="kuvat/cv_kuva1.jpg" id="omakuva"/>
+		<br>
           <h2 class="featurette-heading">Tervehdys!</h2>
-			<div id="teksti">Hei! Olen Jenni Wesslin, toisen vuoden Tietojenkäsittelyn opiskelija
-			Haaga-Helia Ammattikorkeakoulusta.<br>
-			Kiinnostuksen kohteisiini kuuluvat Java-koodauksen lisäksi verkkosivujen ja graafisten käyttöliittymien rakentelu ja suunnittelu, sekä 3D-mallinnus Blenderillä.<br><br>
-			Vahvuuteni ovat Front-end- koodauksessa, mutta haluan oppia ja osata mahdollisimman paljon myös Back-end- puolesta, sillä Full-stack- osaaminen on se mihin pyrin.<br>
-			Minulle ovat tuttuja mm. Java, SQL, JavaScript, HTML, CSS, jQuery, AngularJS ja Bootstrap.<br><br>
+			<div id="teksti">Olen keväällä 2018 valmistuva ICT- alan opiskelija. Opiskelen ohjelmistokehitystä ja erikoistun Front- end - ohjelmointiin sekä UI/UX- kehittämiseen. Etsin tällä hetkellä kesätöitä tai vakituista työpaikkaa.<br><br>
+            Olen rento, ahkera, avoin ja hauska tyyppi Helsingistä. Pyrin jatkuvasti etsimään uusia tapoja laajentaa nykyisiä taitojani ja saada uusia. 
+
+            Minulla on kokemusta Java- ja Android ohjelmoinnista, lisäksi osaan mm. näitä: HTML5, CSS, SQL, XML, Bootstrap, Thymeleaf, JavaScript ja jQuery.<br>
+            Osaan myös hieman näitäkin: C #, React, Angular JS, PHP, ja Spring Boot. Osaan käyttää Microsoft Office -ohjelmistoja, kuten Word, Excel ja Powerpoint.<br><br>
+			
 			Olen kiinnostunut oppimaan uutta ja pidän haasteista. Olen huumorintajuinen, vastuuntuntoinen, reipas työntekijä joka haluaa kehittyä ja osaa työskennellä niin yksin kuin ryhmässäkin.
 			</div>
 	   </div>
@@ -78,11 +252,12 @@
 <hr id="koulutus" class="featurette-divider">
 		<br>
 		<br>
+		<br>
 		<div class="row featurette">
         
         <div class="col-md-12">
           <h2 class="featurette-heading">Koulutus</h2>
-		  	<table data-role="table" class="ui-responsive ui-shadow" id="tutkinnot" style="box-shadow:3px 3px 30px;" align="center">
+		  	<table data-role="table" class="ui-responsive ui-shadow center" id="tutkinnot" style="box-shadow:3px 3px 30px;">
 				<thead>
 						<tr>
 							<th style="padding:10px;">Tutkinto</th>
@@ -114,27 +289,35 @@
 <hr id="Tyokokemus" class="featurette-divider"> 
 		<br>
 		<br>
+		<br>
         <div  class="row featurette">
 		<div class="col-md-12">
 		  <h2 class="featurette-heading">Työkokemus</h2>
-		  <h3></h3>
-			<table data-role="table" data-mode="columntoggle" data-column-btn-text="Valitse näytettävät tiedot" class="ui-responsive ui-shadow" id="tyokokemus" style="box-shadow:3px 3px 30px;" align="center">
+
+			<table data-role="table" data-mode="columntoggle" data-column-btn-text="Valitse näytettävät tiedot" class="ui-responsive ui-shadow center" id="tyokokemus" style="box-shadow:3px 3px 30px;">
 				<thead>
 						<tr>
 							<th style="padding:10px;">Tehtävänimike</th>
-							<th style="padding:10px;"data-priority="1">Työnantaja</th>
-							<th style="padding:10px;"data-priority="2">Yritys</th>
-							<th style="padding:10px;"data-priority="3">Aikaväli</th>
-							<th style="padding:10px;"data-priority="4">Lisätiedot</th>
+							<th style="padding:10px;" data-priority="1">Työnantaja</th>
+							<th style="padding:10px;" data-priority="2">Yritys</th>
+							<th style="padding:10px;" data-priority="3">Aikaväli</th>
+							<th style="padding:10px;" data-priority="4">Lisätiedot</th>
 						</tr>
 				</thead>
 				<tbody>
 						<tr>
-							<td style="padding:10px;">Apulaismyymälä-päällikkö</td>
+							<td style="padding:10px;">Apulaismyymäläpäällikkö</td>
 							<td style="padding:10px;">Kari Kyrömäki</td>
 							<td style="padding:10px;">Suomen Lähikauppa Oy</td>
 							<td style="padding:10px;">1.9.2007 - 6.3.2016</td>
 							<td style="padding:10px;">Työtehtäviini kuului kassatyön ja hyllyttämisen lisäksi tilausten hoito (tilausmäärien arviointi, tilaaminen ja vastaanotto), tilitykset sekä myymäläpäällikön työparina toimiminen</td>
+						</tr>
+                    <tr>
+							<td style="padding:10px;">Ohjelmointiharjoittelija</td>
+							<td style="padding:10px;">Kristian Töyrä</td>
+							<td style="padding:10px;">Timehouse Oy</td>
+							<td style="padding:10px;">2.1.2017 - 31.5.2017</td>
+							<td style="padding:10px;">Työharjoittelun aikana tehtäviini kuului ohjelmoinnin ja ohjelmistotuen harjoittelu C#- ohjelmointikielellä. </td>
 						</tr>
 				</tbody>
 			</table>
@@ -144,11 +327,12 @@
 <hr id="taidot" class="featurette-divider">
 		<br>
 		<br>
+		<br>
 		<div  class="row featurette">
          
         <h2 class="featurette-heading">Taidot</h2>
 		<div class="col-md-7">
-			<table data-role="table" class="ui-responsive ui-shadow" id="" style="box-shadow:3px 3px 30px; margin-bottom:30px; width:50%" align="center">
+			<table data-role="table" class="ui-responsive ui-shadow center" id="taitotasot" style="box-shadow:3px 3px 30px; margin-bottom:30px; width:50%">
 				<thead>
 					<tr>
 						<th style="padding:10px;">Taitotaso</th>
@@ -174,13 +358,16 @@
 						</tr>
 				</tbody>
 			</table>
+			
+			
+			<img src="kuvat/koodi.png" alt="kone" id="koodi" style="width:30%; padding:20px"/>
 		</div>
 		
 		
 		<div class="col-md-5">
 		<div class="ui-responsive" id="Taitotaulu">
 		
-			<table data-role="table" class="ui-responsive ui-shadow" id="taidot" style="box-shadow:3px 3px 30px;" align="center">
+			<table data-role="table" class="ui-responsive ui-shadow center" id="osaaminen" style="box-shadow:3px 3px 30px;">
 	
 				<thead>
 						<tr>
@@ -191,19 +378,43 @@
 				<tbody>
 						<tr>
 							<td style="padding:10px;">Java</td>
-							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+							<td><span class="ui-icon-star ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">C#</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
 						</tr>
 						<tr>
 							<td style="padding:10px;">Android-ohjelmointi</td>
-							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
 						</tr>
 						<tr>
 							<td style="padding:10px;">JavaScript</td>
-							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">PHP</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
 						</tr>
 						<tr>
 							<td style="padding:10px;">HTML</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">CSS</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+						<tr>
+							<td style="padding:10px;">XML</td>
 							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+                        <tr>
+							<td style="padding:10px;">React</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+						</tr>
+                        <tr>
+							<td style="padding:10px;">Spring Boot</td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
 						</tr>
 						<tr>
 							<td style="padding:10px;">jQuery</td>
@@ -211,22 +422,18 @@
 						</tr>
 						<tr>
 							<td style="padding:10px;">Bootstrap</td>
-							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
+							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
 						</tr>
 						<tr>
 							<td style="padding:10px;">AngularJS</td>
 							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
 						</tr>
 						<tr>
-							<td style="padding:10px;">CSS</td>
-							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
-						</tr>
-						<tr>
 							<td style="padding:10px;">SQL</td>
 							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
 						</tr>
 						<tr>
-							<td style="padding:10px;">Office365- ohjelmat</td>
+							<td style="padding:10px;">Office 365- ohjelmat</td>
 							<td><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span><span class="ui-icon-star ui-btn-icon-notext inlineIcon"></span></td>
 						</tr>
 						<tr>
@@ -248,7 +455,44 @@
 		</div>
 		</div>
 		
+<hr id="galleria" class="featurette-divider">
+		<br>
+		<br>
+		<br>
+		<div class="row featurette">
+			<div class="sivut col-md-6">
+				
+				<h2 class="featurette-heading">Galleria</h2>
+				
+                <div id="teksti2">Tässä pieni kuvagalleria työnäytteistäni. Sivut ovat rakennettu käyttäen apuna mm. JavaScriptiä, jQuerya, jQuery Mobilea, Bootstrapia ja AngularJS:ää. Galleria on toteutettu Lightboxilla. Työnäytteiden koodit löytyvät <a href="https://github.com/NeonDemon88">Githubista</a>.</div>
+					<br>
+					<br>
+					<a href="kuvat/disney.jpg" data-lightbox="sivut">
+                        <img src="kuvat/disney_pieni.jpg" alt="Disney" id="disney" onmousedown="aani3.play()" title="Tämä sivusto on tehty W3.CSS- pohjaa apuna käyttäen."/>
+                    </a>  
+					<a href="kuvat/kuljetus.jpg" data-lightbox="sivut">
+                        <img src="kuvat/kuljetus_pieni.jpg" alt="Kuljetus" id="kuljetus" onmousedown="aani3.play()" title="Tämä sivusto on tehty Bootstrapilla ja jQueryllä."/>
+                    </a> 
+					<a href="kuvat/tower.jpg" data-lightbox="sivut">
+                        <img src="kuvat/tower_pieni.jpg" alt="Tower" id="tower" onmousedown="aani3.play()" title="Tämä sivusto on tehty jQueryä sekä jQuery Mobilea apuna käyttäen."/>
+                    </a> 
+					<a href="kuvat/rent.jpg" data-lightbox="sivut">
+                        <img src="kuvat/rent_pieni.jpg" alt="Rent" id="rent" onmousedown="aani3.play()" title="Tämä sivusto on tehty AngularJS:llä."/>
+                    </a>
+					
+				</div>
+			
+			<div class="col-md-6">
+			<h2 class="featurette-heading">Matopeli</h2>
+			
+			<div id="teksti">Matopeli luotu jQueryllä. Ohjaus toimii WASD- näppäimillä (W = ylös, S = alas, A = vasen, D = oikea).</div>
+			<br>
+			<center><canvas id="canvas" width="350" height="350"></canvas></center>
+			</div>
+			</div>
+		
 <hr id="kurssit" class="featurette-divider">
+		<br>
 		<br>
 		<br>
 		<div class="row featurette">
@@ -270,6 +514,11 @@
 							<td style="padding:10px;">Haaga-Helia Ammattikorkeakoulu</td>
 							<td style="padding:10px;">Android- ohjelmoinnin alkeet. Ohjelmoin kurssilla yksinkertaisen Ostoslista- sovelluksen, jonka avulla pystyy kokoamaan ostoslistan ja lähettämään sen tekstiviestillä valitsemalleen henkilölle.</td>
 						</tr>
+                        <tr>
+							<td style="padding:10px;">Ohjelmistoprojekti 2</td>
+							<td style="padding:10px;">Haaga-Helia Ammattikorkeakoulu</td>
+							<td style="padding:10px;">Mobiilisovelluksen suunnittelu ja kehittäminen Viopelle. Kehitimme matematiikkasovelluksen Viopen omien sivujen pohjalta, sovellusta markkinoidaan Brasiliaan opetusvälineeksi.</td>
+						</tr>
 						<tr>
 							<td style="padding:10px;">Hypermedia</td>
 							<td style="padding:10px;">Haaga-Helia Ammattikorkeakoulu</td>
@@ -287,10 +536,12 @@
 		</div>
 
 <hr id="kielitaito" class="featurette-divider">
-      
+		<br>
+		<br>
+        <br>
 		<div class="row featurette">
   
-		<div class="col-md-12">
+		<div class="col-md-6">
 		<h2 class="featurette-heading">Kielitaito</h2>
 		<div class="ui-responsive" id="kielitaulu">
 			<table data-role="table" id="kielitaito" style="box-shadow:3px 3px 30px;" align="center">
@@ -317,17 +568,19 @@
 			</table>
 		</div>
         </div>
+		<div class="col-md-6">
+		<center><img src="kuvat/language.png" id="language" style="margin-top:20px"/></center>
+		</div>
 		</div>
 
-      
       <hr class="featurette-divider">
 	  
       <footer>
-        <p style="font-size:25px" class="pull-right"><a href="#tiedot">Takaisin alkuun</a></p>
-        <p style="font-size:25px; text-align:center;">Jenni Wesslin &middot; Email: lordimonster@netti.fi / jenni.wesslin@myy.haaga-helia.fi &middot; puh:+358 44 3339233</p>
-      </footer>
+		<p style="font-size:25px; text-align:center;">Jenni Wesslin &middot; Email: jenni.wesslin@outlook.com &middot; puh:+358 44 3339233</p>
+		<center><p style="font-size:30px"><a href="#tiedot" onmousedown="aani2.play()">Takaisin alkuun</a></p></center>
+	  </footer>
 
     </div><!-- /.container -->
-
+	
   </body>
 </html>

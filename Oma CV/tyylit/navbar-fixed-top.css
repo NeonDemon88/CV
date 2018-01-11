@@ -3,7 +3,12 @@
 @media (max-width: 769px) {
 	
 body {font-size:15px;}
-h2 {font-size:25px;}
+
+h2 {font-size:30px;}
+
+label {font-size: 25px;}
+
+p{font-size: 10px;}
 
 #teksti{text-align:center;
 		padding:10px;}
@@ -61,7 +66,7 @@ font-family: 'gothic_ultra_otregular';}
 
 #navbar a{font-family: 'gothic_ultra_otregular';
 	font-size: 25px;
-	text-shadow:1px 1px;
+	font-weight: bold;
 	color:black;
 }
 #navbar a:hover{
